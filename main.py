@@ -21,16 +21,19 @@ async def redirect():
   return RedirectResponse(url="/run-ocr/681e6890ecd3abda3c6c4bd1")  # ObjectId do italac.jpeg
 
   # Rota para rodar o ocr
-@app.get("/run-ocr/{image_id}")  # Passar id da imagem como parâmetro 
+@app.get("/run-ocr/{image_id}")  # Passar id da imagem como parâmetro  
 async def run_ocr(image_id: str):
     try:
       image = await collection.find_one({"_id": ObjectId(image_id)})
       if image:
-        process_image = process.Enhance(image["path"])
+        # process_image = process.Enhance(image["path"])
+        process_image = process.Enhance("./img/acucar_organico.jpg")
         processed_image = process_image.execute()
 
         extracted_text = pytesseract.image_to_string(processed_image, lang='por')
         print(extracted_text)
+
+        process_image.show_steps()
         return extracted_text
       else: {"erro": "Imagem nao encontrada"}
 
