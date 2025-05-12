@@ -1,1 +1,1 @@
-﻿# Estudo e testes de tratamento de imagem para aumentar precisao do OCR
+﻿# Troca da forma de receber as imagens do banco de dados para multiform/form-data (rota POST)
