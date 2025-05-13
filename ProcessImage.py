@@ -2,20 +2,16 @@ import cv2
 
 class Enhance:
 
-    def __init__(self, image_path):
-        self.image_path = image_path
+    def __init__(self, img):
+        self.img = img
 
     def execute(self):
-        self.read_image()
         self.canny_edge()
         self.gaussian_blur()
         self.gray_scale()
         self.thresholding()
         self.resize()
         return self.resized
-
-    def read_image(self):
-        self.img = cv2.imread(self.image_path)
 
         # Aplicar o filtro de Canny para detectar os arestas
     def canny_edge(self):

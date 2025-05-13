@@ -1,33 +1,25 @@
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
-from motor.motor_asyncio import AsyncIOMotorClient
-from bson import ObjectId
-import ProcessImage as process
+from fastapi import FastAPI, UploadFile, File
+import numpy as np
+import cv2
 import pytesseract
+import ProcessImage as process
 
 app = FastAPI()
 
-  # Conexão com MongoDB
-client = AsyncIOMotorClient("mongodb://localhost:27017")
-db = client["test-ocr"]
-collection = db["img"]
-  
-  # Obs: no meu mongodb local tenho o seguinte objeto: { _id: ObjectId(681e6890ecd3abda3c6c4bd1), path: "./img/italac.jpeg"}
-
-  # Rota home para praticidade de teste do ocr
-@app.get("/")
-async def redirect():
-  # Redireciona imediatamente para a rota run-ocr com o id de teste já aplicado
-  return RedirectResponse(url="/run-ocr/681e6890ecd3abda3c6c4bd1")  # ObjectId do italac.jpeg
-
   # Rota para rodar o ocr
-@app.get("/run-ocr/{image_id}")  # Passar id da imagem como parâmetro  
-async def run_ocr(image_id: str):
+@app.post("/run-ocr/")
+async def run_ocr(file: UploadFile = File(...)):
     try:
-      image = await collection.find_one({"_id": ObjectId(image_id)})
-      if image:
+        # Ler arquivo
+      file_contents = await file.read()
+
+        # Converter para NumPy array e depois para formato cv2
+      np_array = np.frombuffer(file_contents, np.uint8)
+      image = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
+      
+      if image is not None:
         # process_image = process.Enhance(image["path"])
-        process_image = process.Enhance("./img/acucar_organico.jpg")
+        process_image = process.Enhance(image)
         processed_image = process_image.execute()
 
         extracted_text = pytesseract.image_to_string(processed_image, lang='por')
@@ -35,9 +27,10 @@ async def run_ocr(image_id: str):
 
         process_image.show_steps()
         return extracted_text
-      else: {"erro": "Imagem nao encontrada"}
+      else: 
+        return {"error": "Image not found"}
 
     except Exception as err:
-       return {"erro": f"Erro de consulta do ID: {str(err)}"}
+       return {"error": f"File upload failed: {str(err)}"}
     
 
