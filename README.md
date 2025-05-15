@@ -1,2 +1,2 @@
-﻿# Development branch ver 1.0
-Last merge from: feature/reestruturacao-fastapi-post
+﻿# Experiment to return only first line from OCR output
+Exclusive to Release 1
