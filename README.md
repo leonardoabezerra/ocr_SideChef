@@ -1,1 +1,2 @@
-﻿# Troca da forma de receber as imagens do banco de dados para multiform/form-data (rota POST)
+﻿# Development branch ver 1.0
+Last merge from: feature/reestruturacao-fastapi-post
