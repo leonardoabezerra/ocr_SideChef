@@ -1,2 +1,2 @@
-# Development branch ver 1.1
-Last merge from: experiment/communication-with-frontend
+# Functional OCR to be implemented on project SideChef
+Version 1.1 for release 1
