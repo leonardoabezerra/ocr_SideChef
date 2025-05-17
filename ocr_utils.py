@@ -40,9 +40,9 @@ class Enhance:
         cv2.resizeWindow("Thresholding", 800, 600)
         cv2.imshow("Thresholding", self.resized)
 
-        cv2.namedWindow("Canny Edge", cv2.WINDOW_NORMAL)
-        cv2.resizeWindow("Canny Edge", 800, 600)
-        cv2.imshow("Canny Edge", self.canny)
+        cv2.namedWindow("Original Image", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Original Image", 800, 600)
+        cv2.imshow("Original Image", self.img)
 
         cv2.waitKey(0)  # Wait key press to close windows
         cv2.destroyAllWindows()
